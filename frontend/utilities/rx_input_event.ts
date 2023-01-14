@@ -8,7 +8,7 @@ export function inputEventInt$(dom: HTMLInputElement): Observable<number> {
 }
 
 export function inputEvent$(dom: HTMLInputElement): Observable<string> {
-  return fromEvent(dom, 'input', (evt) => (evt.target! as HTMLInputElement).value)
+  return fromEvent(dom, 'change', (evt) => (evt.target! as HTMLInputElement).value)
     .pipe(
       startWith(dom.value),
     );
