@@ -1,0 +1,70 @@
+---
+version: '3.9'
+
+services:
+  frontend:
+    build: 
+      context: ../frontend
+      dockerfile: Dockerfile
+    image: nextjs-web-frontend:latest
+    volumes:
+      - type: bind
+        source: $PWD/frontend
+        target: /app
+    ports:
+      - 80:5500
+    environment:
+      # For frontend-server to make call to the backend in the same network
+      SERVER_API_BASE_URL: http://backend:3000/api/v1
+      # For browser to make call to the backend in the same network
+      CLIENT_API_BASE_URL: http://localhost:3000/api/v1
+      PORT: 5500
+    depends_on:
+      - backend
+  
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+      args:
+        PG_MAJOR: '13'
+    image: rails-api-backend:latest
+    volumes:
+      - type: bind
+        source: $PWD/backend
+        target: /app
+    ports:
+      - 3000:3000
+    environment:
+      # DB's host name must match the DB's service name specified here
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: demo_db
+      DB_USER: rails
+      DB_PASSWORD: password
+      # This allows Rails server to accept calls from frontend.
+      # Reference: Rails 6 DNS rebinding attacks
+      SERVER_HOST_NAME: backend
+    depends_on:
+      - db
+
+  # # TODO: A small rails-console service for debugging
+  # backend_debugger:
+  
+  db:
+    image: postgres:15.1
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: rails
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: demo_db
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    # healthcheck:
+    #   test: pg_isready -U rails -h 127.0.0.1
+    #   interval: 5s
+
+volumes:
+  postgres:
