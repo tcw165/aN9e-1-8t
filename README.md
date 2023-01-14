@@ -1,6 +1,6 @@
 # Architecture Overview
 
-<img src="architecture overview.png" alt="Architecture Overview" style="width:400px;"/>
+<img src="architecture overview.png" alt="Architecture Overview" style="width:600px;"/>
 
 ---
 
@@ -8,6 +8,10 @@
 
 1. If you have [Docker](https://www.docker.com/) installed, you could follow [Use Docker Compose](#use-docker-compose) instruction.
 2. If you have [Minikuber](https://minikube.sigs.k8s.io/docs/start/) installed, you could follow [Use Minikube](#use-minikube) instruction.
+
+Here is the preview:
+
+<img src="preview.png" alt="Preview" style="width:600px;"/>
 
 ### Use Docker Compose
 
