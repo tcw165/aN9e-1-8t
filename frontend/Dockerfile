@@ -25,6 +25,10 @@ RUN apt-get install -y --fix-missing \
   fzf
 
 WORKDIR /app
+# Copy the entire code from host to container
+COPY . /app/
+RUN npm install
+
 EXPOSE 5500/tcp
 
 CMD ["npm", "run", "dev"]
