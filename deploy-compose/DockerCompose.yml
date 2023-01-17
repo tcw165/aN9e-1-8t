@@ -6,7 +6,7 @@ services:
     build: 
       context: ../frontend
       dockerfile: Dockerfile
-    image: nextjs-web-frontend:latest
+    image: boyw165/nextjs-web-frontend:latest
     volumes:
       - type: bind
         source: $PWD/frontend
@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
       args:
         PG_MAJOR: '13'
-    image: rails-api-backend:latest
+    image: boyw165/rails-api-backend:latest
     volumes:
       - type: bind
         source: $PWD/backend
