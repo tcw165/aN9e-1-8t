@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-server-deployment
+  namespace: development
+  labels:
+    app: api-server
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: api-server
+  template:
+    metadata:
+      labels:
+        app: api-server
+    spec:
+      containers:
+      - name: api-server-container
+        image: boyw165/angellist-homework-api-server:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "150m"
+        ports:
+        - containerPort: 3000
+        env:
+          - name: DB_HOST
+            value: database-svc.development.svc.cluster.local
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_NAME
+            value: db
+          - name: DB_USER
+            value: admin
+          - name: DB_PASSWORD
+            value: admin

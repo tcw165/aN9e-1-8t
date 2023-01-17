@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  namespace: development
+  labels:
+    app: webapp
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp-container
+        image: boyw165/angellist-homework-webapp:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "150m"
+        ports:
+        - containerPort: 5500
+        env:
+          - name: SERVER_API_BASE_URL
+            value: http://api-svc.development.svc.cluster.local:3000/api/v1
+          - name: CLIENT_API_BASE_URL
+            value: http://api-svc.development.svc.cluster.local:3000/api/v1
